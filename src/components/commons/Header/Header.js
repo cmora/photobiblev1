@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 
-import Logotitle from '../Logotitle/'
+import Logotitle from '../Logotitle/Logotitle'
 import { STYLES } from '../../../styles';
 
 const Header = ({

@@ -11,7 +11,11 @@ import {
   Dimensions,
   ActivityIndicator,
   Platform,
+  PermissionsAndroid
 } from 'react-native';
+
+import ImagePicker from 'react-native-image-picker';
+
 
 import { STYLES } from '../../../styles';
 
@@ -32,15 +36,64 @@ class Home extends React.Component {
     this.getPhotos();
   }
 
-  getPhotos = () => {
-    CameraRoll.getPhotos({
-      first: 100,
-      assetType: 'Photos',
-      groupTypes: 'All',
-    })
-    .then(r => this.setState({ photos: r.edges, photosLoaded: true }))
-    .catch((err) => {
-      console.log(err);
+  async requestExternalStoreageRead() {
+    try {
+      if (Platform.OS === 'ios') return true;
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          'title': 'Cool App ...',
+          'message': 'App needs access to external storage'
+        }
+      );
+      return granted == PermissionsAndroid.RESULTS.GRANTED
+    } catch (err) {
+      return false;
+    }
+  }
+
+  getPhotos = async () => {
+    if (await this.requestExternalStoreageRead()) {
+      const params = {
+        first: 40,
+        groupTypes: 'SavedPhotos',
+        assetType: 'Photos',
+      };
+      if (Platform.OS === 'android') {
+        delete params.groupTypes;
+      }
+      CameraRoll.getPhotos(params)
+      .then(r => {
+        console.log(r);
+        this.setState({ photos: r.edges, photosLoaded: true })
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+
+  androidRequestReadStoragePermission() {
+    return new Promise((resolve, reject) => {
+      if (
+        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE) ===
+        PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        return resolve();
+      }
+
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
+        .then(result => {
+          if (result === PermissionsAndroid.RESULTS.GRANTED) {
+            resolve();
+          } else {
+            reject();
+          }
+        })
+        .catch(err => {
+          reject();
+          alert(err);
+        });
     });
   }
 
@@ -48,7 +101,6 @@ class Home extends React.Component {
     const { image } = item.item.node;
     const { width: screenWidth } = Dimensions.get('window');
     const width = screenWidth / 4;
-    console.log(item);
     return (
       <TouchableOpacity onPress={() => this.onSelectImage(item)}>
         <Image
@@ -59,9 +111,34 @@ class Home extends React.Component {
     )
   }
 
-  onSelectImage = (image) => {
+  onSelectImage = (item) => {
+    const { image } = item.item.node;
     const { navigate } = this.props.navigation;
     navigate('Photo', { image });
+  }
+
+  takePhoto = () => {
+    const options = {
+      mediaType: 'photo',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.launchCamera(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        console.log(response);
+        const source = { uri: response.uri };
+        const { navigate } = this.props.navigation;
+        navigate('Photo', { image: source });
+      }
+    });
   }
 
   render() {
@@ -74,7 +151,7 @@ class Home extends React.Component {
             style={styles.logo}
           />
           <View style={styles.headTitle}>
-            <Text style={styles.titleText}>PHOTOBIBLE</Text>
+            <Text style={styles.titleText}>LIBRERIA</Text>
           </View>
         </View>
         {!photosLoaded && (
@@ -82,6 +159,7 @@ class Home extends React.Component {
         )}
         {photosLoaded && (
           <FlatList
+            style={styles.photoGrid}
             data={photos}
             renderItem={this.renderImage}
             numColumns={4}
@@ -97,10 +175,10 @@ class Home extends React.Component {
               <Text style={[styles.buttonText, styles.buttonActive]}>LIBRERIA</Text>
             </View>
             <TouchableOpacity
-              onPress={() => this.onSelectImage(item)}
+              onPress={() => this.takePhoto()}
               style={styles.button}
             >
-              <Text style={styles.buttonText}>PHOTO</Text>
+              <Text style={styles.buttonText}>TOMAR FOTO</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -163,6 +241,9 @@ const styles = StyleSheet.create({
   },
   buttonActive: {
     color: STYLES.color.primary,
+  },
+  photoGrid: {
+    marginBottom: Platform.OS === 'ios' ? 80 : 0,
   }
 });
 

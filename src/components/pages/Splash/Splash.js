@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Animated, ImageBackground, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import SplashScreen from 'react-native-splash-screen';
 
 import { STYLES } from '../../../styles';
 import { Verses } from '../../../data/Verses';
@@ -30,6 +31,7 @@ class Splash extends React.Component {
   }
 
   componentDidMount() {
+    SplashScreen.hide();
     this.animateLogo();
   }
 
@@ -81,7 +83,7 @@ class Splash extends React.Component {
     setTimeout(() => {
       const { navigate } = this.props.navigation;
       navigate('Home');
-    }, 6000);
+    }, 5000);
   }
 
   renderVerse = (item, index) => {

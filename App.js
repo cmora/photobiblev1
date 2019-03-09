@@ -1,7 +1,7 @@
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import Splash from './src/components/pages/Splash/';
-import Home from './src/components/pages/Home/';
-import Photo from './src/components/pages/Photo/';
+import Splash from './src/components/pages/Splash/Splash';
+import Home from './src/components/pages/Home/Home';
+import Photo from './src/components/pages/Photo/Photo';
 import { STYLES } from './src/styles';
 
 const AppNavigator = createStackNavigator({
@@ -19,7 +19,7 @@ const AppNavigator = createStackNavigator({
 {
   mode: 'modal',
   cardStyle: { backgroundColor: STYLES.color.gray },
-  initialRouteName: 'Home',
+  initialRouteName: 'Splash',
   defaultNavigationOptions: {
     headerStyle: {
       backgroundColor: STYLES.color.gray,
