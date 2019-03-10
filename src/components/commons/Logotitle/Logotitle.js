@@ -14,7 +14,7 @@ const Logotitle = ({
 	
   return (
     <View style={styles.titleWraper}>
-      <Text style={styles.titleText}>{title}</Text>
+      <Text style={styles.titleText}>{title.toUpperCase()}</Text>
     </View>
   );
 };
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	titleText: {
-		textTransform: 'uppercase',
 		fontSize: 18,
 		fontFamily: STYLES.fonts.montserrat,
 		color: STYLES.color.primary,

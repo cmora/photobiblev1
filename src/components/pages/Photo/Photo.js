@@ -11,19 +11,36 @@ import {
   Dimensions,
   ActivityIndicator,
   Platform,
-  Button
 } from 'react-native';
 
 import Logotitle from '../../commons/Logotitle/Logotitle';
+import Button from '../../commons/Button/Button'
 import Filter from '../../commons/Filter/Filter';
 import { Filters } from '../../../data/Filters';
 import { STYLES } from '../../../styles';
 
 class Photo extends React.Component {
   static navigationOptions = (props) => {
+    const { goBack, navigate, getParam} = props.navigation;
+    const filter = getParam('filter');
+    const image = getParam('image');
     return {
       headerTitle: <Logotitle title="PHOTOBIBLE" />,
-      headerBackTitle: 'Volver',
+      headerLeft: (
+        <Button
+          onPressHandler={() => goBack(null)}
+          arrow="left"
+          label="Volver"
+        />
+      ),
+      headerRight: (
+        <Button
+          onPressHandler={() => Alert.alert(filter, image)}
+          arrow="right"
+          label="Siguiente"
+          theme="primary"
+        />
+      ),
     }
   }
 
@@ -36,12 +53,16 @@ class Photo extends React.Component {
 
   componentDidMount() {
     const { navigation } = this.props;
+    const { filter } = this.state;
     const image = navigation.getParam('image');
+    navigation.setParams({ filter });
     this.setState({ image, filtersLoaded: true, imageLoaded: true });
   }
 
   setFilter = (filter) => {
     this.setState({ filter });
+    const { navigation } = this.props;
+    navigation.setParams({ filter });
   }
 
   renderImage = () => {
@@ -80,6 +101,10 @@ class Photo extends React.Component {
         </View>
       </TouchableOpacity>
     )
+  }
+
+  goToEditor = () => {
+    Alert.alert('ss');
   }
 
   render() {

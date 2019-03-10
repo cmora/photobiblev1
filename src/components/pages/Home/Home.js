@@ -26,10 +26,17 @@ class Home extends React.Component {
     header: null,
   }
 
+  constructor(props) {
+    super(props);
+    this.onEndReachedCalledDuringMomentum = true;
+  }
+
   state = {
     photosLoaded: false,
     photos: [],
-    index: null
+    index: null,
+    hasNextPage: true,
+    endCursor: null,
   }
 
   componentDidMount() {
@@ -54,22 +61,26 @@ class Home extends React.Component {
 
   getPhotos = async () => {
     if (await this.requestExternalStoreageRead()) {
-      const params = {
-        first: 40,
-        groupTypes: 'SavedPhotos',
-        assetType: 'Photos',
-      };
-      if (Platform.OS === 'android') {
-        delete params.groupTypes;
+      const { hasNextPage, endCursor } = this.state;
+      if (hasNextPage) {
+        const params = {
+          first: 40,
+          groupTypes: 'SavedPhotos',
+          assetType: 'Photos',
+        };
+
+        if (endCursor) {
+          params.after = endCursor;
+        }
+
+        if (Platform.OS === 'android') {
+          delete params.groupTypes;
+        }
+
+        CameraRoll.getPhotos(params)
+          .then(r => this.storeImages(r))
+          .catch((err) => console.log(err));
       }
-      CameraRoll.getPhotos(params)
-      .then(r => {
-        console.log(r);
-        this.setState({ photos: r.edges, photosLoaded: true })
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     }
   }
 
@@ -141,6 +152,26 @@ class Home extends React.Component {
     });
   }
 
+  storeImages(data) {
+    const { edges: photos, page_info: { end_cursor, has_next_page } } = data;
+    const { photos: prevData } = this.state;
+    var newArray = prevData.slice();    
+    newArray.push(...photos);   
+    this.setState({
+      photos: newArray, 
+      photosLoaded: true,
+      endCursor: end_cursor,
+      hasNextPage: has_next_page,
+    })
+  };
+
+  onEndReached() {
+    if(!this.onEndReachedCalledDuringMomentum){
+      this.getPhotos();
+      this.onEndReachedCalledDuringMomentum = true;
+    }
+  }
+
   render() {
     const { photos, photosLoaded } = this.state;
     return (
@@ -150,9 +181,6 @@ class Home extends React.Component {
             source={LOGO}
             style={styles.logo}
           />
-          <View style={styles.headTitle}>
-            <Text style={styles.titleText}>LIBRERIA</Text>
-          </View>
         </View>
         {!photosLoaded && (
           <ActivityIndicator size="large" />
@@ -162,9 +190,17 @@ class Home extends React.Component {
             style={styles.photoGrid}
             data={photos}
             renderItem={this.renderImage}
+            ListHeaderComponent={() => (
+              <View style={styles.headTitle}>
+                <Text style={styles.titleText}>LIBRERIA</Text>
+              </View>
+            )}
             numColumns={4}
             onScroll={this.onScrollHandle}
             keyExtractor={(item) => item.node.image.filename}
+            onEndReached={this.onEndReached.bind(this)}
+            onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
+            onEndReachedThreshold={0.5}
           />
         )}
         {photosLoaded && (
@@ -197,6 +233,9 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: 'center',
     paddingTop: 50,
+    paddingBottom: 20,
+    borderBottomColor: STYLES.color.grayLight,
+    borderBottomWidth: 1,
   },
   logo: {
     width: 180,
@@ -204,9 +243,6 @@ const styles = StyleSheet.create({
   },
   headTitle: {
     padding: 15,
-    marginTop: 20,
-    borderTopColor: STYLES.color.grayLight,
-    borderTopWidth: 1,
     alignSelf: 'stretch',
   },
   titleText: {
