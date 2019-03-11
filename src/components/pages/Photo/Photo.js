@@ -6,11 +6,8 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Alert,
-  CameraRoll,
   Dimensions,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 
 import Logotitle from '../../commons/Logotitle/Logotitle';
@@ -21,24 +18,18 @@ import { STYLES } from '../../../styles';
 
 class Photo extends React.Component {
   static navigationOptions = (props) => {
-    const { goBack, navigate, getParam} = props.navigation;
+    const { navigate, getParam} = props.navigation;
     const filter = getParam('filter');
     const image = getParam('image');
     return {
       headerTitle: <Logotitle title="PHOTOBIBLE" />,
-      headerLeft: (
-        <Button
-          onPressHandler={() => goBack(null)}
-          arrow="left"
-          label="Volver"
-        />
-      ),
       headerRight: (
         <Button
-          onPressHandler={() => Alert.alert(filter, image)}
+          onPressHandler={() => navigate('Tabs', { filter, image })}
           arrow="right"
           label="Siguiente"
           theme="primary"
+          style="clear"
         />
       ),
     }
@@ -66,8 +57,10 @@ class Photo extends React.Component {
   }
 
   renderImage = () => {
-    const { image, filter } = this.state;
+    const { image, filter, imageLoaded } = this.state;
     const { width } = Dimensions.get('window');
+    if (!imageLoaded) return <ActivityIndicator size="large" />;
+
     return (
       <View style={styles.image}>
         <Filter name={filter}>
@@ -101,10 +94,6 @@ class Photo extends React.Component {
         </View>
       </TouchableOpacity>
     )
-  }
-
-  goToEditor = () => {
-    Alert.alert('ss');
   }
 
   render() {

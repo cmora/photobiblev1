@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: STYLES.color.text,
     fontFamily: STYLES.fonts.montserrat,
     fontSize: 14,
   },

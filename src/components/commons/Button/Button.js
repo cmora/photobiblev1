@@ -12,22 +12,39 @@ const Button = ({
   label,
   arrow,
   onPressHandler,
-  theme
+  theme,
+  style,
 }) => {
   if (!label) return null;
 
-  const color = theme === 'primary' ? STYLES.color.primary : '#FFFFFF';
+  let color = theme === 'primary' ? STYLES.color.primary : STYLES.color.text;
+  let justifyContent = null;
   const borderColor = color;
+  const background = style === 'background' ? STYLES.color.primary : null;
+  const fontSize = style === 'background' ? 18 : 12;
+  const padding = {
+    paddingVertical: style === 'background' ? 15 : 10,
+    paddingHorizontal: style === 'background' ? 20 : 16,
+  };
+  if ( style === 'background' ) {
+    color = '#FFFFFF';
+    justifyContent = 'center';
+  }
 	
   return (
     <TouchableOpacity
-      style={[styles.button, styles[`button${arrow}`]]}
+      style={[
+        styles.button, 
+        styles[`button${arrow}`], 
+        { backgroundColor: background, justifyContent }, 
+        padding,
+      ]}
       onPress={() => onPressHandler ? onPressHandler() : null }
     >
       {arrow && (
         <View style={[styles.arrow, styles[arrow], { borderColor }]} />
       )}
-      <Text style={[styles.titleText, { color }]}>{label.toUpperCase()}</Text>
+      <Text style={[styles.titleText, { color, fontSize }]}>{label.toUpperCase()}</Text>
     </TouchableOpacity>
   );
 };
@@ -38,11 +55,9 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
 	},
 	titleText: {
-		fontSize: 14,
+		fontSize: 12,
 		fontFamily: STYLES.fonts.montserrat,
 		textAlign: 'center',
   },
