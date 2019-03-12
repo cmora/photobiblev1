@@ -4,8 +4,10 @@ import Splash from './src/components/pages/Splash/Splash';
 import Home from './src/components/pages/Home/Home';
 import Photo from './src/components/pages/Photo/Photo';
 import Tabs from './src/components/pages/Tabs/Tabs';
+import PhotoEditor from './src/components/pages/PhotoEditor/PhotoEditor';
+import SharePhoto from './src/components/pages/SharePhoto/SharePhoto';
 
-import Button from './src/components/commons/Button/Button'
+import MainButton from './src/components/commons/MainButton/MainButton'
 import { STYLES } from './src/styles';
 
 const AppNavigator = createStackNavigator({
@@ -16,11 +18,13 @@ const AppNavigator = createStackNavigator({
   },
   Photo: { screen: Photo },
   Tabs: { screen: Tabs },
+  PhotoEditor: { screen: PhotoEditor },
+  SharePhoto: { screen: SharePhoto }
 },
 {
   mode: 'card',
   cardStyle: { backgroundColor: STYLES.color.gray },
-  initialRouteName: 'Splash',
+  initialRouteName: 'Home',
   defaultNavigationOptions: (props) => {
     const { goBack } = props.navigation;
 
@@ -34,7 +38,7 @@ const AppNavigator = createStackNavigator({
         fontWeight: 'bold',
       },
       headerLeft: (
-        <Button
+        <MainButton
           onPressHandler={() => goBack(null)}
           arrow="left"
           label="Volver"

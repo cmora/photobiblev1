@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import Logotitle from '../../commons/Logotitle/Logotitle';
-import Button from '../../commons/Button/Button'
+import MainButton from '../../commons/MainButton/MainButton'
 import Filter from '../../commons/Filter/Filter';
 import { Filters } from '../../../data/Filters';
 import { STYLES } from '../../../styles';
@@ -24,7 +24,7 @@ class Photo extends React.Component {
     return {
       headerTitle: <Logotitle title="PHOTOBIBLE" />,
       headerRight: (
-        <Button
+        <MainButton
           onPressHandler={() => navigate('Tabs', { filter, image })}
           arrow="right"
           label="Siguiente"

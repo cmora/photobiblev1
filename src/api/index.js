@@ -7,3 +7,11 @@ export const getVerses = async (book, chapter) => {
     console.error(error)
   }
 };
+
+export const getDailyVerse = async () => {
+	try {
+    return await axios.get('https://beta.ourmanna.com/api/v1/get/', { params: { format: 'json' }});
+  } catch (error) {
+    console.error(error)
+  }
+};

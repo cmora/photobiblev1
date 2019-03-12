@@ -4,14 +4,11 @@ import {
   Text,
 	View,
 	ScrollView,
-  Modal,
 	TouchableOpacity,
-	FlatList,
 } from 'react-native';
 
 import Accordion from 'react-native-collapsible/Accordion';
-import { isArray } from 'lodash';
-import Button from '../../../components/commons/Button/Button';
+import AcordionHeader from '../../commons/AcordionHeader/AcordionHeader';
 import BibleModal from '../../pages/Tabs/BibleModal';
 import * as API from '../../../api/';
 
@@ -37,10 +34,10 @@ class Bible extends React.Component {
 		const { activeBooks } = this.state;
 		const isExpanded = activeBooks[0] === Books.indexOf(book);
     return (
-      <View style={styles.header}>
-        <Text style={styles.headerText}>{book.name.toUpperCase()}</Text>
-				<View style={[styles.arrow, isExpanded ? styles.arrowExpanded : null]} />
-      </View>
+      <AcordionHeader
+				label={book.name.toUpperCase()}
+				isExpanded={isExpanded}
+			/>
     );
 	};
 	
@@ -100,6 +97,14 @@ class Bible extends React.Component {
 		});
 	}
 
+	useVerseHanlder = () => {
+		const { useVerseHanlder } = this.props;
+		this.setModalVisible(!this.state.modalVisible);
+		setTimeout(() => {
+			useVerseHanlder(this.state.selectedVerse);
+		}, 500);
+	}
+
   render() {
 		const {
 			modalVisible,
@@ -108,8 +113,6 @@ class Bible extends React.Component {
 			verses,
 			selectedVerse,
 		} = this.state;
-
-		const { useVerseHanlder } = this.props;
 
     return (
       <View style={styles.container}>
@@ -132,7 +135,7 @@ class Bible extends React.Component {
 						verses={verses}
 						setVerse={this.setVerse}
 						verse={selectedVerse}
-						useVerseHanlder={useVerseHanlder}
+						useVerseHanlder={this.useVerseHanlder}
 					/>
 				)}
       </View>
@@ -144,34 +147,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: STYLES.color.gray,
 		flex: 1,
-	},
-	header: {
-		paddingVertical: 14,
-		paddingHorizontal: 16,
-		borderTopWidth: 1,
-		borderTopColor: STYLES.color.grayLight,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-	},
-	headerText: {
-		color: STYLES.color.text,
-		fontFamily: STYLES.fonts.montserrat,
-		fontSize: 14,
-	},
-	arrow: {
-    width: 10,
-    height: 10,
-    borderWidth: 1,
-		transform: [{ rotate: '45deg'}],
-		borderColor: STYLES.color.text,
-		borderTopWidth: 0,
-		borderLeftWidth: 0,
-		marginTop: -2,
-	},
-	arrowExpanded: {
-		transform: [{ rotate: '-135deg'}],
-		marginTop: 4,
 	},
 	content: {
 		paddingHorizontal: 16,

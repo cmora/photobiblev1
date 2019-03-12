@@ -15,15 +15,13 @@ import {
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import Logotitle from '../../commons/Logotitle/Logotitle';
-import Button from '../../commons/Button/Button';
 import Bible from '../../pages/Tabs/Bible';
+import Promises from '../../pages/Tabs/Promises';
+import DailyVerse from '../../pages/Tabs/DailyVerse';
 import { STYLES } from '../../../styles';
 
 class BibleTabs extends React.Component {
   static navigationOptions = (props) => {
-    const { navigate, getParam} = props.navigation;
-    const filter = getParam('filter');
-    const image = getParam('image');
     return {
       headerTitle: <Logotitle title="PHOTOBIBLE" />,
       headerRight: null,
@@ -33,26 +31,33 @@ class BibleTabs extends React.Component {
   state = {
 		index: 0,
     routes: [
-      { key: 'bible', title: 'Bíblico' },
-			{ key: 'second', title: 'Promesas' },
-			{ key: 'third', title: 'Del día' },
+      { key: 'bible', title: 'Biblia' },
+			{ key: 'promises', title: 'Promesas' },
+			{ key: 'daily', title: 'Del día' },
     ],
   }
   
   useVerseHanlder = (verse) => {
-    Alert.alert(`${verse.book_name} ${verse.chapter}:${verse.verse}`)
+    const { navigate, getParam} = this.props.navigation;
+    const filter = getParam('filter');
+    const image = getParam('image');
+    navigate('PhotoEditor', {
+      filter,
+      image,
+      verse,
+    });
   }
 
-	renderBIble = () => (
+	renderBible = () => (
 		<Bible useVerseHanlder={this.useVerseHanlder} />
   );
   
-	SecondRoute = () => (
-		<View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+	renderPromises = () => (
+		<Promises useVerseHanlder={this.useVerseHanlder} />
 	);
 	
-	ThirdRoute = () => (
-		<View style={[styles.scene, { backgroundColor: 'red' }]} />
+	renderDailyVerse = () => (
+		<DailyVerse useVerseHanlder={this.useVerseHanlder} />
   );
   
   renderTabBar = props => {
@@ -74,9 +79,9 @@ class BibleTabs extends React.Component {
 					navigationState={this.state}
 					tabBarPosition='bottom'
 					renderScene={SceneMap({
-						bible: this.renderBIble,
-						second: this.SecondRoute,
-						third: this.ThirdRoute,
+						bible: this.renderBible,
+						promises: this.renderPromises,
+						daily: this.renderDailyVerse,
           })}
           renderTabBar={this.renderTabBar}
 					onIndexChange={index => this.setState({ index })}

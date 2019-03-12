@@ -8,7 +8,7 @@ import {
 
 import { STYLES } from '../../../styles';
 
-const Button = ({
+const MainButton = ({
   label,
   arrow,
   onPressHandler,
@@ -49,7 +49,7 @@ const Button = ({
   );
 };
 
-export default Button;
+export default MainButton;
 
 const styles = StyleSheet.create({
   button: {

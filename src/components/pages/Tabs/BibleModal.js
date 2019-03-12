@@ -10,10 +10,8 @@ import {
 } from 'react-native';
 
 import { isArray, get } from 'lodash';
-import Button from '../../../components/commons/Button/Button';
-import * as API from '../../../api/';
-
-import { Books } from '../../../data/Books';
+import MainButton from '../../commons/MainButton/MainButton';
+import Verse from '../../../components/commons/Verse/Verse';
 
 import { STYLES } from '../../../styles';
 
@@ -41,14 +39,15 @@ class BibleModal extends React.Component {
 		const bookName = get(verse, 'book_name');
 		const chapter = get(verse, 'chapter');
 		const verseNumber = get(verse, 'verse');
-		const text = get(verse, 'text');
+		const text = get(verse, 'text').replace('\n', '');
 
 		return (
 			<View style={styles.verseWrapper}>
-				<View style={styles.verseHead}>
-					<Text style={styles.verseHeadText}>{text}</Text>
-				</View>
-				<Text style={styles.verseChapterText}>{bookName} {chapter}:{verseNumber}</Text>
+				<Verse
+					quote={text}
+					passage={`${bookName} ${chapter}:${verseNumber}`}
+					size="large"
+				/>
 			</View>
 		)
 	}
@@ -72,7 +71,7 @@ class BibleModal extends React.Component {
 			>
 				<View style={styles.modal}>
 					<View style={styles.modalHeader}>
-						<Button
+						<MainButton
 							onPressHandler={() => {
 								onCloseModal();
 							}}
@@ -101,7 +100,7 @@ class BibleModal extends React.Component {
 					{verse && this.renderVerse()}
 					{verse && (
 						<View style={styles.useButton}>
-							<Button
+							<MainButton
 								label="Usar este versículo"
 								theme="primary"
 								style="background"
@@ -148,26 +147,16 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		fontFamily: STYLES.fonts.montserrat,
 	},
-	verseWrapper: {
-		paddingHorizontal: 16,
-		marginTop: 24, 
-	},
-	verseHeadText: {
-		fontSize: 20,
-		fontFamily: STYLES.fonts.montserrat,
-		color: STYLES.color.text,
-	},
-	verseChapterText: {
-		fontSize: 18,
-		fontFamily: STYLES.fonts.montserratLight,
-		color: STYLES.color.primary,
-	},
 	useButton: {
 		position: 'absolute',
 		bottom: 50,
 		right: 0,
 		left: 0,
 		paddingHorizontal: 16,
+	},
+	verseWrapper: {
+		paddingHorizontal: 16,
+		marginTop: 20,
 	}
 });
 
