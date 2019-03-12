@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Alert,
   CameraRoll,
   Dimensions,
   ActivityIndicator,

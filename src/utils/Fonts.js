@@ -3,4 +3,7 @@ export const Fonts = {
     montserrat: 'Montserrat-Medium',
     montserratBold: 'Montserrat-Bold',
     montserratBlack: 'Montserrat-Black',
+
+    // CUSTOM FONTS
+
 }

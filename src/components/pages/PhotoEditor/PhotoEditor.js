@@ -4,22 +4,19 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-  CameraRoll,
   Dimensions,
-  ActivityIndicator,
-	Platform,
 } from 'react-native';
 
 import ViewShot from "react-native-view-shot";
 import Logotitle from '../../commons/Logotitle/Logotitle';
 import MainButton from '../../commons/MainButton/MainButton';
 import Filter from '../../commons/Filter/Filter';
-import Bar from '../../pages/PhotoEditor/editor/Bar';
+import EditorBar from './editor/EditorBar';
+import EditorContent from './editor/EditorContent';
 
+import { Options } from '../../../data/EditionOptions';
 import { STYLES } from '../../../styles';
+
 
 class PhotoEditor extends React.Component {
   static navigationOptions = (props) => {
@@ -43,6 +40,8 @@ class PhotoEditor extends React.Component {
 
   state = {
 		editedImage: null,
+		tabSelected: 'Fuente',
+		barOptions: Options,
 	}
 	
 	componentDidMount () {
@@ -65,7 +64,11 @@ class PhotoEditor extends React.Component {
 		const { width } = Dimensions.get('window');
 		
     return (
-			<ViewShot ref={(el) => { this.viewShot = el }} options={{ format: "jpg", quality: 0.9 }}>
+			<ViewShot
+				ref={(el) => { this.viewShot = el }}
+				options={{ format: "jpg", quality: 0.9 }}
+				style={styles.canvas}
+			>
 				<View style={styles.image}>
 					<Filter name={filter}>
 						<Image
@@ -80,13 +83,32 @@ class PhotoEditor extends React.Component {
 				</View>
 			</ViewShot>
     );
-  }
+	}
+	
+	onChangeButton = (option) => {
+		const { barOptions } = this.state;
+		const newOptions = barOptions.map((optionSaved) => {
+			optionSaved.isSelected = optionSaved.name === option;
+			return optionSaved;
+		});
+		this.setState({
+			barOptions: newOptions,
+			tabSelected: option,
+		});
+	}
 	
   render() {
+		const { barOptions, tabSelected } = this.state;
     return (
       <View style={styles.container}>
 				{this.renderImage()}
-				<Bar items={['a', 'b']} />
+				<EditorContent
+					selectedTab={tabSelected}
+				/>
+				<EditorBar
+					options={barOptions}
+					onChangeButton={this.onChangeButton}
+				/>
       </View>
     );
   }
@@ -96,7 +118,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: STYLES.color.gray,
     flex: 1,
-		paddingBottom: Platform.OS === 'ios' ? 30 : 0,
+		justifyContent: 'space-between',
 	},
 	verse: {
 		position: 'absolute',
@@ -109,6 +131,10 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 16,
 		fontFamily: STYLES.fonts.montserrat,
+	},
+	canvas: {
+		flex: 1,
+		justifyContent: 'center',
 	}
 });
 

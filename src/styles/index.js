@@ -5,6 +5,7 @@ export const STYLES = {
     color: {
         gray: Config.BACK_COLOR,
         grayLight: '#44454b',
+        garDark: '#25262a',
         primary: Config.PRIMARY_COLOR,
         text: Config.SECONDARY_COLOR,
     },

@@ -1,15 +1,8 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-  CameraRoll,
   Dimensions,
-  ActivityIndicator,
 	Platform,
 } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
