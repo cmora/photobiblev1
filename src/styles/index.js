@@ -5,7 +5,7 @@ export const STYLES = {
     color: {
         gray: Config.BACK_COLOR,
         grayLight: '#44454b',
-        garDark: '#25262a',
+        grayDark: '#25262a',
         primary: Config.PRIMARY_COLOR,
         text: Config.SECONDARY_COLOR,
     },
@@ -14,6 +14,9 @@ export const STYLES = {
         montserratLight: Fonts.montserratLight,
         montserratBold: Fonts.montserratBold,
         montserratBlack: Fonts.montserratBlack,
+    },
+    padding: {
+        global: 16,
     },
     shadows: {
         bottom: {

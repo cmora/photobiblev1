@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 
+import { get } from 'lodash';
 import Accordion from 'react-native-collapsible/Accordion';
 import AcordionHeader from '../../commons/AcordionHeader/AcordionHeader';
 import BibleModal from '../../pages/Tabs/BibleModal';
@@ -83,6 +84,8 @@ class Bible extends React.Component {
 	};
 	
 	setVerse = (verse) => {
+		const text = get(verse, 'text').replace('\n', '');
+		verse.text = text;
 		this.setState({ selectedVerse: verse });
 	}
 
@@ -149,8 +152,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	content: {
-		paddingHorizontal: 16,
-		marginBottom: 16,
+		paddingHorizontal: STYLES.padding.global,
+		marginBottom: STYLES.padding.global,
 	},
 	chapters: {
 		flex: 1,

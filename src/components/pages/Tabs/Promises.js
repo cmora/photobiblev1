@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 		borderTopColor: STYLES.color.grayLight,
 	},
 	content: {
-		padding: 16,
+		padding: STYLES.padding.global,
 	},
 	verseItem: {
 		borderBottomColor: STYLES.color.grayLight,

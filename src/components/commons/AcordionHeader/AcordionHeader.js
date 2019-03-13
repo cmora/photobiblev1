@@ -26,7 +26,7 @@ export default AcordionHeader;
 const styles = StyleSheet.create({
   header: {
 		paddingVertical: 14,
-		paddingHorizontal: 16,
+		paddingHorizontal: STYLES.padding.global,
 		borderTopWidth: 1,
 		borderTopColor: STYLES.color.grayLight,
 		flexDirection: 'row',

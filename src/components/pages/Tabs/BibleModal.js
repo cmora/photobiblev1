@@ -126,10 +126,10 @@ const styles = StyleSheet.create({
 		color: STYLES.color.primary,
 	},
 	modalContent: {
-		padding: 16,
+		padding: STYLES.padding.global,
 	},
 	versesCarousel: {
-		paddingHorizontal: 16,
+		paddingHorizontal: STYLES.padding.global,
 	},
 	verseItem: {
 		marginHorizontal: 5,
@@ -152,10 +152,10 @@ const styles = StyleSheet.create({
 		bottom: 50,
 		right: 0,
 		left: 0,
-		paddingHorizontal: 16,
+		paddingHorizontal: STYLES.padding.global,
 	},
 	verseWrapper: {
-		paddingHorizontal: 16,
+		paddingHorizontal: STYLES.padding.global,
 		marginTop: 20,
 	}
 });

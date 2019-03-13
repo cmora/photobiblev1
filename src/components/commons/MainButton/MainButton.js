@@ -24,7 +24,7 @@ const MainButton = ({
   const fontSize = style === 'background' ? 18 : 12;
   const padding = {
     paddingVertical: style === 'background' ? 15 : 10,
-    paddingHorizontal: style === 'background' ? 20 : 16,
+    paddingHorizontal: style === 'background' ? 20 : STYLES.padding.global,
   };
   if ( style === 'background' ) {
     color = '#FFFFFF';

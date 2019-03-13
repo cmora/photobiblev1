@@ -4,7 +4,8 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
+	TouchableOpacity,
+	Dimensions,
 } from 'react-native';
 import { isArray } from 'lodash';
 
@@ -16,12 +17,13 @@ const BarButton = ({
 	iconActive,
 	isSelected,
 	onChangeButton,
+	width,
 }) => {
 	const ICON = isSelected ? iconActive : icon; 
 	const color = isSelected ? STYLES.color.primary : STYLES.color.text;
 	return (
 		<TouchableOpacity
-			style={styles.button}
+			style={[styles.button, { width }]}
 			onPress={() => onChangeButton ? onChangeButton(label) : null }
 		>
 			<Image
@@ -39,6 +41,8 @@ const EditorBar = ({
 }) => {
 	if (!isArray(options)) return null;
 
+	const itemWidth = Dimensions.get('window').width / options.length;
+
 	return (
 		<View style={styles.container}>
 			{options.map((option) => {
@@ -50,6 +54,7 @@ const EditorBar = ({
 						isSelected={option.isSelected}
 						onChangeButton={onChangeButton}
 						key={option.name}
+						width={itemWidth}
 					/>
 				);
 			})}
@@ -61,9 +66,9 @@ export default EditorBar;
 
 const styles = StyleSheet.create({
   container: {
-		backgroundColor: STYLES.color.garDark,
-		paddingVertical: 12,
-		paddingHorizontal: 16,
+		backgroundColor: STYLES.color.grayDark,
+		paddingTop: 6,
+		paddingBottom: 12,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',

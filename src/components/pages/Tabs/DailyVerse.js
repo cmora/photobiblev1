@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: STYLES.color.gray,
 		flex: 1,
-		padding: 16,
+		padding: STYLES.padding.global,
 		marginTop: 20,
 	},
 	useButton: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 		bottom: 20,
 		right: 0,
 		left: 0,
-		paddingHorizontal: 16,
+		paddingHorizontal: STYLES.padding.global,
 	},
 });
 
