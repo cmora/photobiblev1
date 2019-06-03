@@ -3,15 +3,16 @@ import {
   StyleSheet,
 	View,
 	Text,
-  FlatList,
 	Dimensions,
-	TouchableOpacity,
-	Slider,
 } from 'react-native';
 
-import { find } from 'lodash';
 import { colors } from '../../../../data/Colors';
+import IconAlign from '../../../commons/IconAlign/IconAlign';
+import IconTextTransform from '../../../commons/IconTextTransform/IconTextTransform';
+import IconVerse from '../../../commons/IconVerse/IconVerse';
+import IconShadow from '../../../commons/IconShadow/IconShadow';
 import { STYLES } from '../../../../styles';
+import SliderWrapper from '../../../commons/SliderWrapper/SliderWrapper';
 
 
 class EditorAdjusts extends React.Component {
@@ -23,19 +24,32 @@ class EditorAdjusts extends React.Component {
 	};
 
   render() {
-		const { onFontSizeChange, onLineHeightChange, onLetterSpacingChange } = this.props;
+		const {
+      onFontSizeChange,
+      onLineHeightChange,
+      onLetterSpacingChange,
+      onAlignChange,
+      onTextTransformChange,
+      onDisplayVerseChange,
+      onDisplayShadowChange,
+      textAlign,
+      textTransform,
+      displayVerse,
+      displayShadow,
+    } = this.props;
+
     return (
       <View style={styles.container}>
 				<View style={styles.sliderSizeContainer}>
 					<Text style={styles.iconSize}>A<Text style={styles.iconSizeSmall}>A</Text></Text>
-					<Slider 
+					<SliderWrapper 
 						style={styles.sliderSize}
 						maximumValue={50}
 						minimumValue={10} 
-						step={1} 
+						step={2} 
 						value={this.state.fontSize}
 						minimumTrackTintColor={STYLES.color.primary}
-						onValueChange={(val) => onFontSizeChange(val)}
+						onValueChange={onFontSizeChange}
 					/>
 				</View>
 				<View style={styles.row}>
@@ -44,31 +58,49 @@ class EditorAdjusts extends React.Component {
 							<Text style={styles.iconLineHeightText}>A</Text>
 							<Text style={styles.iconLineHeightText}>A</Text>
 						</View>
-						<Slider 
+						<SliderWrapper 
 							style={styles.sliderSmall}
 							maximumValue={50}
 							minimumValue={10} 
-							step={1} 
+							step={2} 
 							value={this.state.lineheight}
 							minimumTrackTintColor={STYLES.color.primary}
-							onValueChange={(val) => onLineHeightChange(val)}
+							onValueChange={onLineHeightChange}
 						/>
 					</View>
 					<View style={[styles.column, styles.columnRight]}>
 						<View>
 							<Text style={styles.iconLetterSpacing}>AA</Text>
 						</View>
-						<Slider 
+						<SliderWrapper 
 							style={styles.sliderSmall}
-							maximumValue={30}
-							minimumValue={-5} 
-							step={0} 
+							maximumValue={20}
+							minimumValue={-2} 
+							step={1} 
 							value={this.state.letterSpacing}
 							minimumTrackTintColor={STYLES.color.primary}
-							onValueChange={(val) => onLetterSpacingChange(val)}
+							onValueChange={onLetterSpacingChange}
 						/>
 					</View>
 				</View>
+        <View style={[styles.row, styles.rowSettings]}>
+          <IconAlign
+            align={textAlign}
+            onPressHandler={onAlignChange}
+          />
+          <IconTextTransform
+            transform={textTransform}
+            onPressHandler={onTextTransformChange}
+          />
+          <IconVerse
+            display={displayVerse}
+            onPressHandler={onDisplayVerseChange}
+          />
+          <IconShadow
+            display={displayShadow}
+            onPressHandler={onDisplayShadowChange}
+          />
+        </View>
       </View>
     );
   }
@@ -76,7 +108,7 @@ class EditorAdjusts extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		height: 100,
+		height: 120,
 		paddingTop: 10,
 		width: '100%',
 		paddingHorizontal: STYLES.padding.global,
@@ -129,7 +161,10 @@ const styles = StyleSheet.create({
 	},
 	columnRight: {
 		paddingLeft: 8,
-	}
+  },
+  rowSettings: {
+    justifyContent: 'space-around',
+  }
 });
 
 export default EditorAdjusts;

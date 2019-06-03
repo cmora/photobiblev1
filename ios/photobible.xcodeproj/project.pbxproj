@@ -91,7 +91,6 @@
 		9B90028356C4440780AD48AF /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27746F30AFBE4AAEA2304C34 /* Oswald-SemiBold.ttf */; };
 		4ADEA8A20BB546EF9063CA7D /* Pacifico-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC6D0DBA660346C7911A8DC4 /* Pacifico-Regular.ttf */; };
 		9181A7FF3DBD456CB0122132 /* PermanentMarker-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A41C9AC48064CA6807D0BB9 /* PermanentMarker-Regular.ttf */; };
-		8F6741172C7C4CF89B0CCD9D /* PrincessSofia-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F83F682380AA4D478323EEB8 /* PrincessSofia-Regular.ttf */; };
 		81A0107F491645E5A7D1BEDB /* Righteous-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7FF0EE4E5784D598E4333BC /* Righteous-Regular.ttf */; };
 		87698D6E871D4FC08C5D6B0E /* Satisfy-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E12A15950F2540E98827A36E /* Satisfy-Regular.ttf */; };
 		39280B9543844BD29712E2A1 /* SigmarOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E83F8F2EFF9947E98B94ACF0 /* SigmarOne-Regular.ttf */; };
@@ -553,7 +552,6 @@
 		27746F30AFBE4AAEA2304C34 /* Oswald-SemiBold.ttf */ = {isa = PBXFileReference; name = "Oswald-SemiBold.ttf"; path = "../assets/fonts/Oswald/Oswald-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		AC6D0DBA660346C7911A8DC4 /* Pacifico-Regular.ttf */ = {isa = PBXFileReference; name = "Pacifico-Regular.ttf"; path = "../assets/fonts/Pacifico/Pacifico-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		5A41C9AC48064CA6807D0BB9 /* PermanentMarker-Regular.ttf */ = {isa = PBXFileReference; name = "PermanentMarker-Regular.ttf"; path = "../assets/fonts/Permanent_Marker/PermanentMarker-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F83F682380AA4D478323EEB8 /* PrincessSofia-Regular.ttf */ = {isa = PBXFileReference; name = "PrincessSofia-Regular.ttf"; path = "../assets/fonts/Princess_Sofia/PrincessSofia-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E7FF0EE4E5784D598E4333BC /* Righteous-Regular.ttf */ = {isa = PBXFileReference; name = "Righteous-Regular.ttf"; path = "../assets/fonts/Righteous/Righteous-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E12A15950F2540E98827A36E /* Satisfy-Regular.ttf */ = {isa = PBXFileReference; name = "Satisfy-Regular.ttf"; path = "../assets/fonts/Satisfy/Satisfy-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E83F8F2EFF9947E98B94ACF0 /* SigmarOne-Regular.ttf */ = {isa = PBXFileReference; name = "SigmarOne-Regular.ttf"; path = "../assets/fonts/Sigmar_One/SigmarOne-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
@@ -901,7 +899,6 @@
 				27746F30AFBE4AAEA2304C34 /* Oswald-SemiBold.ttf */,
 				AC6D0DBA660346C7911A8DC4 /* Pacifico-Regular.ttf */,
 				5A41C9AC48064CA6807D0BB9 /* PermanentMarker-Regular.ttf */,
-				F83F682380AA4D478323EEB8 /* PrincessSofia-Regular.ttf */,
 				E7FF0EE4E5784D598E4333BC /* Righteous-Regular.ttf */,
 				E12A15950F2540E98827A36E /* Satisfy-Regular.ttf */,
 				E83F8F2EFF9947E98B94ACF0 /* SigmarOne-Regular.ttf */,
@@ -1622,7 +1619,6 @@
 				9B90028356C4440780AD48AF /* Oswald-SemiBold.ttf in Resources */,
 				4ADEA8A20BB546EF9063CA7D /* Pacifico-Regular.ttf in Resources */,
 				9181A7FF3DBD456CB0122132 /* PermanentMarker-Regular.ttf in Resources */,
-				8F6741172C7C4CF89B0CCD9D /* PrincessSofia-Regular.ttf in Resources */,
 				81A0107F491645E5A7D1BEDB /* Righteous-Regular.ttf in Resources */,
 				87698D6E871D4FC08C5D6B0E /* Satisfy-Regular.ttf in Resources */,
 				39280B9543844BD29712E2A1 /* SigmarOne-Regular.ttf in Resources */,

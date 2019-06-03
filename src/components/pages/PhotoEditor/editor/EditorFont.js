@@ -37,7 +37,6 @@ class EditorFont extends React.Component {
 		const { fontSelected } = this.state;
 		const isSelected = fontSelected === item.name;
 		const color = isSelected ? STYLES.color.primary : STYLES.color.text;
-		console.log(item.name);
 		return (
 			<TouchableOpacity
 				onPress={() => {
@@ -79,7 +78,7 @@ class EditorFont extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		height: 100,
+		height: 120,
 		flexDirection: 'column',
 		alignItems: 'center',
 	},

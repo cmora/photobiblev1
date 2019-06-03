@@ -20,11 +20,11 @@ import EditorContent from './editor/EditorContent';
 import { Options } from '../../../data/EditionOptions';
 import { STYLES } from '../../../styles';
 
+import { hexToRgb } from '../../../utils/index';
+
 class PhotoEditor extends React.Component {
   static navigationOptions = (props) => {
-    const { navigate, getParam} = props.navigation;
-    const filter = getParam('filter');
-		const image = getParam('image');
+    const { getParam} = props.navigation;
 		const saveFinalImage = getParam('saveFinalImage');
     return {
       headerTitle: <Logotitle title="PHOTOBIBLE" />,
@@ -49,7 +49,14 @@ class PhotoEditor extends React.Component {
 		fontOpacity: 1,
 		fontSize: 16,
 		fontLineHeight: 20,
-		fontLetterSpacing: 0,
+    fontLetterSpacing: 0,
+    textAlign: 'center',
+    textTransform: 'capitalize',
+    displayVerse: 'passage',
+    displayShadow: 'box',
+    selectedShadowColor: '#000000',
+    selectedShadowSize: '10',
+    selectedShadowOpacity: '0.5',
 	}
 	
 	componentDidMount () {
@@ -78,14 +85,56 @@ class PhotoEditor extends React.Component {
 			fontOpacity,
 			fontSize,
 			fontLineHeight,
-			fontLetterSpacing,
-		} = this.state;
+      fontLetterSpacing,
+      textAlign,
+      textTransform,
+      displayVerse,
+      selectedShadowColor,
+      selectedShadowSize,
+      selectedShadowOpacity,
+      displayShadow,
+    } = this.state;
     const { getParam} = this.props.navigation;
     const filter = getParam('filter');
 		const image = getParam('image');
 		const verse = getParam('verse');
-		const { width } = Dimensions.get('window');
-		
+    const { width } = Dimensions.get('window');
+    let { reference, text } = verse;
+
+    if (textTransform === 'uppercase') {
+      text = text.toUpperCase();
+      reference = reference.toUpperCase();
+    }
+    if (textTransform === 'lowercase') {
+      text = text.toLowerCase();
+      reference = reference.toLowerCase();
+    }
+
+    const shadowColor = selectedShadowColor !== 'transparent'
+      ? `rgba(${hexToRgb(selectedShadowColor)}, ${selectedShadowOpacity})`
+      : 'transparent';
+    
+    const textShadowStyle = {
+      textShadowOffset: {
+        width: 2,
+        height: 2,
+      },
+      textShadowRadius: Number(selectedShadowSize),
+      textShadowColor: shadowColor,
+    }
+
+    let boxShadowStyle = {
+      padding: 0,
+      backgroundColor: 'transparent',
+    };
+
+    if (displayShadow === 'box') {
+      boxShadowStyle = {
+        backgroundColor: shadowColor,
+        padding: 10,
+      }
+    }
+
     return (
 			<ViewShot
 				ref={(el) => { this.viewShot = el }}
@@ -102,36 +151,50 @@ class PhotoEditor extends React.Component {
 						/>
 					</Filter>
 					<Gestures
+            style={styles.gestures}
 						rotatable
 						scalable={{
 							min: 0.5,
 							max: 5,
-						}}
+            }}
 					>
-						<View style={[styles.verse]}>
+						<View
+              style={[
+                styles.verse,
+                boxShadowStyle,
+              ]
+            }>
+              {displayVerse === 'passage' && (
+                <Text
+                  style={[
+                    styles.verseText,
+                    styles.versePasage,
+                    { fontFamily: selectedFontVerse },
+                    { color: selectedFontColor },
+                    { opacity: fontOpacity },
+                    { fontSize },
+                    { lineHeight: fontLineHeight },
+                    { letterSpacing: fontLetterSpacing },
+                    { textAlign },
+                    displayShadow === 'text' ? textShadowStyle : null,
+                  ]}
+                >
+                  {text}
+                </Text>
+              )}
 							<Text
 								style={[
 									styles.verseText,
-									styles.versePasage,
 									{ fontFamily: selectedFontVerse },
 									{ color: selectedFontColor },
 									{ opacity: fontOpacity },
 									{ fontSize },
 									{ lineHeight: fontLineHeight },
-									{ letterSpacing: fontLetterSpacing },
+                  { letterSpacing: fontLetterSpacing },
+                  { textAlign },
+                  displayShadow === 'text' ? textShadowStyle : null,
 								]}
-							>{verse.text}</Text>
-							<Text
-								style={[
-									styles.verseText,
-									{ fontFamily: selectedFontVerse },
-									{ color: selectedFontColor },
-									{ opacity: fontOpacity },
-									{ fontSize },
-									{ lineHeight: fontLineHeight },
-									{ letterSpacing: fontLetterSpacing },
-								]}
-							>{`${verse.book_name} ${verse.chapter}:${verse.verse}`}</Text>
+							>{reference}</Text>
 						</View>
 					</Gestures>
 				</View>
@@ -181,6 +244,34 @@ class PhotoEditor extends React.Component {
 
 	onLetterSpacingChange = (letterSpacing) => {
 		this.setState({ fontLetterSpacing: letterSpacing });
+  }
+  
+  onAlignChange = (align) => {
+    this.setState({ textAlign: align });
+  }
+  
+  onTextTransformChange = (transform) => {
+    this.setState({ textTransform: transform });
+  }
+  
+  onDisplayVerseChange = (display) => {
+    this.setState({ displayVerse: display });
+  }
+
+  onDisplayShadowChange = (display) => {
+    this.setState({ displayShadow: display });
+  }
+  
+  onSelectShadowColor = (color) => {
+		this.setState({ selectedShadowColor: color });
+  }
+  
+  onShadowSizeChange = (size) => {
+		this.setState({ selectedShadowSize: size });
+  }
+  
+  onShadowOpacityChange = (opacity) => {
+		this.setState({ selectedShadowOpacity: opacity });
 	}
 	
   render() {
@@ -189,8 +280,13 @@ class PhotoEditor extends React.Component {
 			tabSelected,
 			selectedFontVerse,
 			selectedFontColor,
-			fontOpacity,
-		} = this.state;
+      fontOpacity,
+      textAlign,
+      textTransform,
+      displayVerse,
+      displayShadow,
+    } = this.state;
+    
 		const fontSettings = {
 			currentFont: selectedFontVerse,
 			onSelectFontVerse:this.onSelectFontVerse,
@@ -204,8 +300,23 @@ class PhotoEditor extends React.Component {
 		const adjustsSettings = {
 			onFontSizeChange: this.onFontSizeChange,
 			onLineHeightChange: this.onLineHeightChange,
-			onLetterSpacingChange: this.onLetterSpacingChange,
-		}
+      onLetterSpacingChange: this.onLetterSpacingChange,
+      onAlignChange: this.onAlignChange,
+      onTextTransformChange: this.onTextTransformChange,
+      onDisplayVerseChange: this.onDisplayVerseChange,
+      onDisplayShadowChange: this.onDisplayShadowChange,
+      textAlign,
+      textTransform,
+      displayVerse,
+      displayShadow,
+    }
+    
+    const shadowSettings = {
+      onSelectShadowColor: this.onSelectShadowColor,
+      onShadowSizeChange: this.onShadowSizeChange,
+      onShadowOpacityChange: this.onShadowOpacityChange,
+      displayShadow,
+    }
 
     return (
       <View style={styles.container}>
@@ -214,7 +325,8 @@ class PhotoEditor extends React.Component {
 					selectedTab={tabSelected}
 					fontSettings={fontSettings}
 					colorSettings={colorSettings}
-					adjustsSettings={adjustsSettings}
+          adjustsSettings={adjustsSettings}
+          shadowSettings={shadowSettings}
 				/>
 				<EditorBar
 					options={barOptions}
@@ -230,15 +342,11 @@ const styles = StyleSheet.create({
     backgroundColor: STYLES.color.gray,
     flex: 1,
 		justifyContent: 'space-between',
-	},
-	verse: {
-		position: 'absolute',
-		bottom: STYLES.padding.global,
-		left: STYLES.padding.global,
-		right: STYLES.padding.global,
-		padding: STYLES.padding.global,
-		backgroundColor: 'rgba(0, 0, 0, 0.6)',
-	},
+  },
+  gestures: {
+    position: 'absolute',
+    bottom: 0,
+  },
 	versePasage: {
 		marginBottom: 10,
 	},
@@ -246,7 +354,7 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 16,
 		fontFamily: STYLES.fonts.montserrat,
-		lineHeight: 20,
+    lineHeight: 20,
 	},
 	canvas: {
 		flex: 1,

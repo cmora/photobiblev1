@@ -60,10 +60,10 @@ class Bible extends React.Component {
 	}
 
 	selectChapter = async (chapter) => {
-		const { selectedBook: { name } } = this.state;
-		this.setModalVisible(!this.state.modalVisible);
-		const response = await API.getVerses(name, chapter);
-		const { verses } = response.data;
+    const { selectedBook: { id } } = this.state;
+    this.setModalVisible(!this.state.modalVisible);
+    const response = await API.getVerses(id, chapter);
+		const { verses } = response.data.response;
 		this.setState({ selectedChapter: chapter, verses });
 	}
  
@@ -84,8 +84,10 @@ class Bible extends React.Component {
 	};
 	
 	setVerse = (verse) => {
-		const text = get(verse, 'text').replace('\n', '');
-		verse.text = text;
+    const { text } = verse;
+    const regex = /(<sup(\s|\S)*?<\/sup>)|(<h3(\s|\S)*?<\/h3>)|(<h5(\s|\S)*?<\/h5>)|(<p(\s|\S)*?>)|(<\/p>)|(\r\n|\n|\r)/ig;
+    const textParsed = text.replace(regex, '');
+    verse.text = textParsed;
 		this.setState({ selectedVerse: verse });
 	}
 

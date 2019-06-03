@@ -31,9 +31,9 @@ export const Options = [
 		"icon": ICON_SHADOW,
 		"iconActive": ICON_SHADOW_ACTIVE
     },
-    {
-		"name": 'Borrar',
-		"icon": ICON_ERASE,
-		"iconActive": ICON_ERASE_ACTIVE
-	}
+    // {
+	// 	"name": 'Borrar',
+	// 	"icon": ICON_ERASE,
+	// 	"iconActive": ICON_ERASE_ACTIVE
+	// }
 ];

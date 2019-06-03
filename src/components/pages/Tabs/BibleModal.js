@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
 	View,
-	ScrollView,
+	ActivityIndicator,
   Modal,
 	TouchableOpacity,
 	FlatList,
@@ -36,16 +36,14 @@ class BibleModal extends React.Component {
 
 	renderVerse() {
 		const { verse } = this.props;
-		const bookName = get(verse, 'book_name');
-		const chapter = get(verse, 'chapter');
-		const verseNumber = get(verse, 'verse');
-		const text = get(verse, 'text').replace('\n', '');
+    const text = get(verse, 'text');
+    const reference = get(verse, 'reference');
 
 		return (
 			<View style={styles.verseWrapper}>
 				<Verse
 					quote={text}
-					passage={`${bookName} ${chapter}:${verseNumber}`}
+					passage={reference}
 					size="large"
 				/>
 			</View>
@@ -85,7 +83,7 @@ class BibleModal extends React.Component {
 							<Text style={styles.modalTitle}>{ selectedBook.name.toUpperCase() } { selectedChapter }</Text>
 						</View>
 					)}
-					{isArray(verses) && verses.length > 0 && (
+					{isArray(verses) && verses.length > 0 ? (
 						<View
 							style={styles.versesCarousel}
 						>
@@ -96,7 +94,9 @@ class BibleModal extends React.Component {
 								horizontal
 							/>
 						</View>
-					)}
+					) : (
+            <ActivityIndicator size="large" />
+          )}
 					{verse && this.renderVerse()}
 					{verse && (
 						<View style={styles.useButton}>

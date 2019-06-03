@@ -31,23 +31,10 @@ class SharePhoto extends React.Component {
 		
 	}
 	
-	saveToCameraRoll = (image) => {
-		if (Platform.OS === 'android') {
-			RNFetchBlob
-				.config({
-					fileCache : true,
-					appendExt : 'jpg'
-				})
-				.fetch('GET', image)
-				.then((res) => {
-					CameraRoll.saveToCameraRoll(res.path())
-						.then(Alert.alert('Success', 'Photo added to camera roll!'))
-						.catch(err => console.log('err:', err))
-				})
-		} else {
-				CameraRoll.saveToCameraRoll(image)
-					.then(Alert.alert('Success', 'Photo added to camera roll!'))
-		}
+	saveToCameraRoll = () => {
+    const { getParam } = this.props.navigation;
+		const image = getParam('image');
+		CameraRoll.saveToCameraRoll(image).then(Alert.alert('Success', 'Photo added to camera roll!'))
 	}
 
 	share = () => {
@@ -70,19 +57,22 @@ class SharePhoto extends React.Component {
   renderImage = () => {
     const { getParam } = this.props.navigation;
 		const image = getParam('image');
-		const { width } = Dimensions.get('window');
+		const { width: width } = Dimensions.get('window');
     return (
-			<Image
-				source={{ uri: image }}
-				style={{ width, height: width }}
-			/>
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: image }}
+          style={{ width: width - 40, height: width - 40 }}
+        />
+      </View>
     );
   }
 	
   render() {
     return (
       <View style={styles.container}>
-				{this.renderImage()}
+        {this.renderImage()}
+        <Text style={styles.title}>GUARDAR O COMPARTIR</Text>
 				<View style={styles.shareButton}>
 					<MainButton
 						onPressHandler={this.share}
@@ -98,8 +88,32 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: STYLES.color.gray,
     flex: 1,
-		paddingBottom: Platform.OS === 'ios' ? 30 : 0,
-	},
+    paddingBottom: Platform.OS === 'ios' ? 30 : 0,
+    paddingTop: 40,
+  },
+  title: {
+    textAlign: 'center',
+    color: STYLES.color.text,
+    fontFamily: STYLES.fonts.montserrat,
+    fontSize: 20,  
+    marginVertical: 20,
+  },
+  imageContainer: {
+    backgroundColor: STYLES.color.grayDark,
+    margin: 20,
+    ...Platform.select({
+      ios: {
+        shadowOpacity: 0.8,
+        shadowRadius: 18,
+        shadowColor: '#000000',
+        shadowOffset: { height: 0, width: 0 },
+      },
+      android: {
+        elevation: 5,
+        position:'relative',
+      },
+    }),
+  }
 });
 
 export default SharePhoto;

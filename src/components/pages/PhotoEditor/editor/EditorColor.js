@@ -5,12 +5,11 @@ import {
   FlatList,
 	Dimensions,
 	TouchableOpacity,
-	Slider,
 } from 'react-native';
 
-import { find } from 'lodash';
 import { colors } from '../../../../data/Colors';
 import { STYLES } from '../../../../styles';
+import SliderWrapper from '../../../commons/SliderWrapper/SliderWrapper';
 
 
 class EditorColor extends React.Component {
@@ -70,14 +69,15 @@ class EditorColor extends React.Component {
 					/>
 				</View>
 				<View style={styles.sliderContainer}>
-					<Slider 
+          <SliderWrapper 
 						style={styles.slider}
 						maximumValue={1}
 						minimumValue={0} 
 						step={0.05} 
 						value={this.state.opacity}
-						minimumTrackTintColor={STYLES.color.primary}
-						onValueChange={(val) => onOpacityChange(val)}
+            minimumTrackTintColor={STYLES.color.primary}
+            maximumTrackTintColor={STYLES.color.grayLight}
+						onValueChange={onOpacityChange}
 					/>
 				</View>
       </View>
@@ -87,7 +87,7 @@ class EditorColor extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		height: 100,
+		height: 120,
 		flexDirection: 'column',
 		alignItems: 'center',
 	},

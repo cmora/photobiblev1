@@ -9,12 +9,14 @@ import { STYLES } from '../../../../styles';
 import EditorFont from './EditorFont';
 import EditorColor from './EditorColor';
 import EditorAdjusts from './EditorAdjusts';
+import EditorShadow from './EditorShadow';
 
 const EditorContent = ({
 	selectedTab,
 	fontSettings,
 	colorSettings,
-	adjustsSettings,
+  adjustsSettings,
+  shadowSettings,
 }) => {
 	if (!selectedTab) return null;
 
@@ -43,14 +45,14 @@ const EditorContent = ({
 				styles.block,
 				selectedTab === 'Sombra' ? styles.active : styles.disable,
 			]}>
-				<Text>{selectedTab}</Text>
+				<EditorShadow {...shadowSettings} />
 			</View>
-			<View style={[
+			{/* <View style={[
 				styles.block,
 				selectedTab === 'Borrar' ? styles.active : styles.disable,
 			]}>
 				<Text>{selectedTab}</Text>
-			</View>
+			</View> */}
 		</View>
 	);
 }
@@ -58,14 +60,14 @@ const EditorContent = ({
 const styles = StyleSheet.create({
   container: {
 		backgroundColor: STYLES.color.grayDark,
-		height: 100,
+		height: 120,
 		position: 'relative',
 		alignItems: 'center',
 		flexDirection: 'row',
 	},
 	block: {
 		position: 'absolute',
-		height: 100,
+		height: 120,
 		flexDirection: 'column',
 		alignItems: 'center',
 		bottom: 0,

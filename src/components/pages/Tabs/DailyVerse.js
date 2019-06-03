@@ -37,8 +37,8 @@ class DailyVerse extends React.Component {
 			chapter: verseSplit[1].split(':')[0],
 			verse: verseSplit[1].split(':')[1],
 			text,
-		}
-
+    }
+    
     return (
       <View style={styles.container}>
 				<Verse

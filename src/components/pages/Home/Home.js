@@ -196,7 +196,7 @@ class Home extends React.Component {
             )}
             numColumns={4}
             onScroll={this.onScrollHandle}
-            keyExtractor={(item) => item.node.image.filename}
+            keyExtractor={(item) => `${item.node.image.filename}${item.node.timestamp}`}
             onEndReached={this.onEndReached.bind(this)}
             onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
             onEndReachedThreshold={0.5}
