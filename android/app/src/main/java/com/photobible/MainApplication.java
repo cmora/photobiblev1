@@ -3,13 +3,14 @@ package com.photobible;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import cl.json.RNSharePackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.imagepicker.ImagePickerPackage;
 import iyegoroff.RNColorMatrixImageFilters.ColorMatrixImageFiltersPackage;
 import cl.json.RNSharePackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
@@ -32,13 +33,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
+            new RNSharePackage(),
             new RNViewShotPackage(),
             new ReanimatedPackage(),
             new SplashScreenReactPackage(),
             new ImagePickerPackage(),
             new ColorMatrixImageFiltersPackage(),
             new RNSharePackage(),
-            new RNFetchBlobPackage(),
             new RNGestureHandlerPackage(),
             new LinearGradientPackage()
       );

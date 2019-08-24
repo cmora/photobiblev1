@@ -12,7 +12,7 @@ import {
   Button,
 	Platform,
 } from 'react-native';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import Logotitle from '../../commons/Logotitle/Logotitle';
 import { STYLES } from '../../../styles';

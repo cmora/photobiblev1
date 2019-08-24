@@ -73,7 +73,7 @@ const StickerList = ({ onSelectSticker }) => {
         renderItem={this.renderSticker}
         numColumns={2}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => get(item, 'index').toString()}
+        // keyExtractor={(item) => get(item, 'index').toString()}
       />
 		</View>
   );
