@@ -41,6 +41,17 @@ class BibleTabs extends React.Component {
     });
   }
 
+  onSelectSticker = sticker => {
+    const { navigate, getParam} = this.props.navigation;
+    const filter = getParam('filter');
+    const image = getParam('image');
+    navigate('PhotoEditor', {
+      filter,
+      image,
+      sticker,
+    });
+  }
+
 	renderBible = () => (
 		<Bible useVerseHanlder={this.useVerseHanlder} />
   );
@@ -50,7 +61,10 @@ class BibleTabs extends React.Component {
 	);
 	
 	renderDailyVerse = () => (
-		<DailyVerse useVerseHanlder={this.useVerseHanlder} />
+    <DailyVerse
+      useVerseHanlder={this.useVerseHanlder}
+      onSelectSticker={this.onSelectSticker}
+    />
   );
   
   renderTabBar = props => {
@@ -92,7 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
 		justifyContent: 'center',
-		paddingBottom: Platform.OS === 'ios' ? 30 : 0,
+		paddingBottom: Platform.OS === 'ios' ? 35 : 0,
   },
   tabbar: {
     backgroundColor: STYLES.color.gray,

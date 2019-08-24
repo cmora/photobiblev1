@@ -35,14 +35,15 @@ export const getDailyVerse = async () => {
   }
 };
 
-export const getSingleVerse = async (id, chapter) => {
+export const getSingleVerse = async () => {
 	try {
-    return await axios.get(`https://es.bibles.org/v2/passages.js?q[]=juan+3:16&version=spa-RVR1960`, {
+    return await axios.get('https://es.bibles.org/v2/passages.js?q[]=juan%1:1&version=spa-RVR1960', {
       auth: {
         username: API_KEY,
-      }
+      },
     });
   } catch (error) {
+    console.log(error);
     console.error(error)
   }
 };

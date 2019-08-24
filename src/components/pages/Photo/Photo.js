@@ -8,6 +8,7 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
+  PanResponder,
 } from 'react-native';
 
 import Logotitle from '../../commons/Logotitle/Logotitle';
@@ -35,11 +36,25 @@ class Photo extends React.Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponderCapture: () => true,
+      onPanResponderGrant: () => this.handlerPressFilter(true),
+      onPanResponderRelease: () => this.handlerPressFilter(),
+    });
+  }
+
   state = {
     imageLoaded: false,
     filtersLoaded: false,
-    filter: 'Original',
+    filter: {
+      name: 'Original',
+      props: {},
+    },
     image: null,
+    filterOpacity: 1,
   }
 
   componentDidMount() {
@@ -56,36 +71,69 @@ class Photo extends React.Component {
     navigation.setParams({ filter });
   }
 
+  handlerPressFilter = (original) => {
+    if (original) {
+      this.setState({ filterOpacity: 0 });
+    } else {
+      this.setState({ filterOpacity: 1 });
+    }
+  }
+
   renderImage = () => {
-    const { image, filter, imageLoaded } = this.state;
+    const {
+      image, 
+      filter, 
+      imageLoaded,
+      filterOpacity,
+    } = this.state;
+    const { name, props } = filter;
     const { width } = Dimensions.get('window');
     if (!imageLoaded) return <ActivityIndicator size="large" />;
 
     return (
-      <View style={styles.image}>
-        <Filter name={filter}>
-          <Image
-            source={{ uri: image.uri }}
-            style={{ width, height: width }}
-          />
-        </Filter>
+      <View
+        style={styles.image}
+        {...this._panResponder.panHandlers}
+      >
+        <Image
+          source={{ uri: image.uri }}
+          style={[styles.imageOriginal, { width, height: width }]}
+        />
+        <View style={styles.filterContainer} >
+          <Filter
+            name={name} 
+            props={props}
+          >
+            <Image
+              source={{ uri: image.uri }}
+              style={[
+                styles.imageFilter,
+                {
+                  width, 
+                  height: width, 
+                  opacity: filterOpacity
+                }
+              ]}
+            />
+          </Filter>
+        </View>
       </View>
     );
   }
 
   renderFilterItem = (filter) => {
     const { image, filter: filterName } = this.state;
-    const { name } = filter.item;
+    const { name, props } = filter.item;
     return (
       <TouchableOpacity
         style={styles.filterCard}
-        onPress={() => this.setFilter(name)}
+        onPress={() => this.setFilter(filter.item)}
       >
         <Text style={[styles.filterCardTitle, filterName === name ? styles.filterActiveText : null]}>
           {name.toUpperCase()}
         </Text>
         <View style={styles.filterCardImage}>
-          <Filter name={name}>
+          <Filter name={name} props={props}>
             <Image
               source={{ uri: image.uri }}
               style={[styles.filterImg, filterName === name ? styles.filterActive : null]}
@@ -133,6 +181,13 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 20,
+    position: "relative",
+  },
+  filterContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 1,
   },
   filterCard: {
     borderRadius: 10,
@@ -161,7 +216,7 @@ const styles = StyleSheet.create({
   },
   filterActiveText: {
     color: STYLES.color.primary,
-  }
+  },
 });
 
 export default Photo;

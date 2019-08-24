@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     backgroundColor: STYLES.color.gray,
-    paddingBottom: Platform.OS === 'ios' ? 30 : 0,
+    paddingBottom: Platform.OS === 'ios' ? 35 : 0,
     flexDirection: 'row',
     justifyContent: 'center'
   },

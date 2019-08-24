@@ -36,24 +36,22 @@ class Promises extends React.Component {
 		return (
 			<View style={styles.content}>
 				{promise.verses.map((verse, index) => {
-					const bookName = get(verse, 'book_name');
-					const chapter = get(verse, 'chapter');
-					const verseNumber = get(verse, 'verse');
-					const text = get(verse, 'text');
+          const text = get(verse, 'text');
+          const reference = get(verse, 'reference');
 					const lastItemStyle = {
 						borderBottomWidth: (index === promise.verses.length - 1) ? 0 : 1,
 						paddingBottom: (index === promise.verses.length - 1) ? 0 : 20,
-					}
+          };
 					return (
 						<TouchableOpacity
 							style={[styles.verseItem, lastItemStyle]}
 							onPress={() => useVerseHanlder(verse) }
 							activeOpacity={0.5}
-							key={`${verse.book_id}-${chapter}:${verseNumber}`}
+							key={`${verse.book_id}-${reference}`}
 						>
 							<Verse
 								quote={text}
-								passage={`${bookName} ${chapter}:${verseNumber}`}
+								passage={reference}
 								size="small"
 							/>
 						</TouchableOpacity>

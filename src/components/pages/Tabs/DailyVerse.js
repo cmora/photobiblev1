@@ -7,6 +7,7 @@ import { get } from 'lodash';
 import * as API from '../../../api/';
 import Verse from '../../commons/Verse/Verse';
 import MainButton from '../../commons/MainButton/MainButton';
+import StickerList from '../../commons/StickerList/StickerList';
 
 import { STYLES } from '../../../styles';
 
@@ -17,28 +18,19 @@ class DailyVerse extends React.Component {
 	};
 
 	async componentDidMount () {
-		const response = await API.getDailyVerse();
-		this.setState({
-			verse: response.data.verse,
-		});
-	}
-
+    const response = await API.getDailyVerse();
+    const verse = get(response, 'data.verse.details');
+    this.setState({ verse });
+  }
+  
   render() {
 		const { verse } = this.state;
 		if (!verse) return null;
 		
-		const { useVerseHanlder } = this.props;
-		const reference = get(verse, 'details.reference');
-		const text = get(verse, 'details.text');
-		const verseSplit = reference.split(' ');
+		const { useVerseHanlder, onSelectSticker } = this.props;
+		const reference = get(verse, 'reference');
+		const text = get(verse, 'text');
 
-		const verseData = {
-			book_name: verseSplit[0],
-			chapter: verseSplit[1].split(':')[0],
-			verse: verseSplit[1].split(':')[1],
-			text,
-    }
-    
     return (
       <View style={styles.container}>
 				<Verse
@@ -51,9 +43,12 @@ class DailyVerse extends React.Component {
 						label="Usar este versículo"
 						theme="primary"
 						style="background"
-						onPressHandler={() => useVerseHanlder(verseData)}
+						onPressHandler={() => useVerseHanlder(verse)}
 					/>
 				</View>
+        <View style={styles.stickerList}>
+          <StickerList onSelectSticker={onSelectSticker} />
+        </View>
       </View>
     );
   }
@@ -67,12 +62,15 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 	},
 	useButton: {
-		position: 'absolute',
-		bottom: 20,
-		right: 0,
-		left: 0,
-		paddingHorizontal: STYLES.padding.global,
-	},
+    width: '100%',
+    marginTop: 20,
+  },
+  stickerList: {
+    paddingTop: 20,
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: STYLES.color.grayLight,
+  }
 });
 
 export default DailyVerse;

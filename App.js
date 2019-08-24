@@ -24,7 +24,7 @@ const AppNavigator = createStackNavigator({
 {
   mode: 'card',
   cardStyle: { backgroundColor: STYLES.color.gray },
-  initialRouteName: 'Splash',
+  initialRouteName: 'Home',
   defaultNavigationOptions: (props) => {
     const { goBack } = props.navigation;
 

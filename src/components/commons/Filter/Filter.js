@@ -19,51 +19,98 @@ import {
   invert,
   contrast,
   saturate,
+  Warm,
+  Cool,
+  Predator,
+  Lsd,
+  Protanomaly,
+  Deuteranomaly,
+  Tritanomaly,
+  Deuteranopia,
+  Tritanopia,
+  Achromatopsia,
+  Achromatomaly,
 } from 'react-native-color-matrix-image-filters';
 
 class Filter extends React.Component {
 
 	getFilterComponent() {
-		const { children, name } = this.props;
+    const { children, name, props } = this.props;
     switch (name) {
       case 'Grayscale':
-        return <Grayscale>{children}</Grayscale>;
+        return <Grayscale {...props}>{children}</Grayscale>;
 
       case 'Sepia':
-        return <Sepia>{children}</Sepia>;
+        return <Sepia {...props}>{children}</Sepia>;
 
-      case 'Tint':
-        return <Tint>{children}</Tint>;
+      case 'Pink':
+        return <Tint {...props}>{children}</Tint>;
 
       case 'ColorMatrix':
         return (
           <ColorMatrix
-            matrix={concatColorMatrices([saturate(-0.9), contrast(5.2), invert()])}
+            matrix={concatColorMatrices([saturate(0.1), contrast(1.2)])}
           >
             {children}
           </ColorMatrix>
         );
 			
 			case 'Technicolor':
-        return <Technicolor>{children}</Technicolor>;
+        return <Technicolor {...props}>{children}</Technicolor>;
 
       case 'Kodachrome':
-        return <Kodachrome>{children}</Kodachrome>;
+        return <Kodachrome {...props}>{children}</Kodachrome>;
 			
 			case 'Polaroid':
-        return <Polaroid>{children}</Polaroid>;
+        return <Polaroid {...props}>{children}</Polaroid>;
 
       case 'Browni':
-        return <Browni>{children}</Browni>;
+        return <Browni {...props}>{children}</Browni>;
 
       case 'Vintage':
-        return <Vintage>{children}</Vintage>;
+        return <Vintage {...props}>{children}</Vintage>;
 			
 			case 'Night':
-        return <Night>{children}</Night>;
+        return <Night {...props}>{children}</Night>;
+      
+      case 'Warm':
+        return <Warm {...props}>{children}</Warm>;
+      
+      case 'Cool':
+        return <Cool {...props}>{children}</Cool>;
+      
+      case 'Predator':
+        return <Predator {...props}>{children}</Predator>;
+      
+      case 'Lsd':
+        return <Lsd {...props}>{children}</Lsd>;
+      
+      case 'Protanomaly':
+        return <Protanomaly {...props}>{children}</Protanomaly>;
+      
+      case 'Deuteranomaly':
+        return <Deuteranomaly {...props}>{children}</Deuteranomaly>;
+      
+      case 'Tritanomaly':
+        return <Tritanomaly {...props}>{children}</Tritanomaly>;
+      
+      case 'Protanopia':
+        return <Protanopia {...props}>{children}</Protanopia>;
+      
+      case 'Deuteranopia':
+        return <Deuteranopia {...props}>{children}</Deuteranopia>;
+
+      case 'Tritanopia':
+        return <Tritanopia {...props}>{children}</Tritanopia>;
+
+      case 'Achromatopsia':
+        return <Achromatopsia {...props}>{children}</Achromatopsia>;
+
+      case 'Achromatomaly':
+        return <Achromatomaly {...props}>{children}</Achromatomaly>;
       
       case 'Original':
-        return <View>{children}</View>;
+        return <View {...props}>{children}</View>;
 
       default:
         return <View>{children}</View>;

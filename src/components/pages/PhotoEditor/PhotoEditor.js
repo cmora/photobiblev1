@@ -5,8 +5,8 @@ import {
   View,
   Image,
 	Dimensions,
-	Alert,
 } from 'react-native';
+import get from 'lodash/get';
 import Gestures from 'react-native-easy-gestures';
 
 
@@ -97,9 +97,11 @@ class PhotoEditor extends React.Component {
     const { getParam} = this.props.navigation;
     const filter = getParam('filter');
 		const image = getParam('image');
-		const verse = getParam('verse');
+    const verse = getParam('verse');
+    const sticker = getParam('sticker');
     const { width } = Dimensions.get('window');
-    let { reference, text } = verse;
+    let reference = get(verse, 'reference');
+    let text = get(verse, 'text');
 
     if (textTransform === 'uppercase') {
       text = text.toUpperCase();
@@ -135,77 +137,94 @@ class PhotoEditor extends React.Component {
       }
     }
 
+    const { name: filterName, props } = filter;
+
     return (
-			<ViewShot
-				ref={(el) => { this.viewShot = el }}
-				options={{ format: "jpg", quality: 0.9 }}
-				style={styles.canvas}
-			>
-				<View
-					style={[styles.image, { width, height: width }]}
-				>
-					<Filter name={filter}>
-						<Image
-							source={{ uri: image.uri }}
-							style={{ width, height: width }}
-						/>
-					</Filter>
-					<Gestures
-            style={styles.gestures}
-						rotatable
-						scalable={{
-							min: 0.5,
-							max: 5,
-            }}
-					>
-						<View
-              style={[
-                styles.verse,
-                boxShadowStyle,
-              ]
-            }>
-              {displayVerse === 'passage' && (
-                <Text
+      <View
+        style={styles.canvas}
+      >
+        <ViewShot
+          ref={(el) => { this.viewShot = el }}
+          options={{ format: "jpg", quality: 0.9 }}
+        >
+          <View
+            style={[styles.image, { width, height: width }]}
+          >
+            <Filter name={filterName} props={props}>
+              <Image
+                source={{ uri: image.uri }}
+                style={{ width, height: width }}
+              />
+            </Filter>
+            <Gestures
+              style={styles.gestures}
+              rotatable
+              scalable={{
+                min: 0.5,
+                max: 5,
+              }}
+            >
+              {verse && (
+                <View
                   style={[
-                    styles.verseText,
-                    styles.versePasage,
-                    { fontFamily: selectedFontVerse },
-                    { color: selectedFontColor },
-                    { opacity: fontOpacity },
-                    { fontSize },
-                    { lineHeight: fontLineHeight },
-                    { letterSpacing: fontLetterSpacing },
-                    { textAlign },
-                    displayShadow === 'text' ? textShadowStyle : null,
-                  ]}
-                >
-                  {text}
-                </Text>
+                    styles.verse,
+                    boxShadowStyle,
+                  ]
+                }>
+                  {displayVerse === 'passage' && (
+                    <Text
+                      style={[
+                        styles.verseText,
+                        styles.versePasage,
+                        { fontFamily: selectedFontVerse },
+                        { color: selectedFontColor },
+                        { opacity: fontOpacity },
+                        { fontSize },
+                        { lineHeight: fontLineHeight },
+                        { letterSpacing: fontLetterSpacing },
+                        { textAlign },
+                        displayShadow === 'text' ? textShadowStyle : null,
+                      ]}
+                    >
+                      {text}
+                    </Text>
+                  )}
+                  <Text
+                    style={[
+                      styles.verseText,
+                      { fontFamily: selectedFontVerse },
+                      { color: selectedFontColor },
+                      { opacity: fontOpacity },
+                      { fontSize },
+                      { lineHeight: fontLineHeight },
+                      { letterSpacing: fontLetterSpacing },
+                      { textAlign },
+                      displayShadow === 'text' ? textShadowStyle : null,
+                    ]}
+                  >
+                    {reference}
+                  </Text>
+                </View>
               )}
-							<Text
-								style={[
-									styles.verseText,
-									{ fontFamily: selectedFontVerse },
-									{ color: selectedFontColor },
-									{ opacity: fontOpacity },
-									{ fontSize },
-									{ lineHeight: fontLineHeight },
-                  { letterSpacing: fontLetterSpacing },
-                  { textAlign },
-                  displayShadow === 'text' ? textShadowStyle : null,
-								]}
-							>{reference}</Text>
-						</View>
-					</Gestures>
-				</View>
-			</ViewShot>
+              {sticker && (
+                <View>
+                  <Image
+                    source={sticker}
+                    style={{ width, height: width }}
+                  />
+                </View>
+              )}
+            </Gestures>
+          </View>
+        </ViewShot>
+      </View>
     );
 	}
 	
 	onChangeButton = (option) => {
 		const { barOptions } = this.state;
 		const newOptions = barOptions.map((optionSaved) => {
-			optionSaved.isSelected = optionSaved.name === option;
+			optionSaved.isSelected = get(optionSaved, 'name') === option;
 			return optionSaved;
 		});
 		this.setState({
@@ -286,6 +305,9 @@ class PhotoEditor extends React.Component {
       displayVerse,
       displayShadow,
     } = this.state;
+
+    const { getParam} = this.props.navigation;
+    const sticker = getParam('sticker');
     
 		const fontSettings = {
 			currentFont: selectedFontVerse,
@@ -320,18 +342,22 @@ class PhotoEditor extends React.Component {
 
     return (
       <View style={styles.container}>
-				{this.renderImage()}
-				<EditorContent
-					selectedTab={tabSelected}
-					fontSettings={fontSettings}
-					colorSettings={colorSettings}
-          adjustsSettings={adjustsSettings}
-          shadowSettings={shadowSettings}
-				/>
-				<EditorBar
-					options={barOptions}
-					onChangeButton={this.onChangeButton}
-				/>
+        {this.renderImage()}
+        {!sticker && (
+          <View>
+            <EditorContent
+              selectedTab={tabSelected}
+              fontSettings={fontSettings}
+              colorSettings={colorSettings}
+              adjustsSettings={adjustsSettings}
+              shadowSettings={shadowSettings}
+            />
+            <EditorBar
+              options={barOptions}
+              onChangeButton={this.onChangeButton}
+            />
+          </View>
+        )}
       </View>
     );
   }
