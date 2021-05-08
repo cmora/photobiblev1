@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "axios": "^0.18.1",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-collapsible": "^1.4.0",
